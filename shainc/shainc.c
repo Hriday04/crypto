@@ -15,7 +15,7 @@ static const unsigned long K[64] = {
 
 /* Initial Hash Values */
 static unsigned long H[8] = {
-    0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 
+    0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
     0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
 };
 
@@ -38,7 +38,7 @@ static void process_chunk(unsigned long *hash, const unsigned char *chunk) {
     for (i = 0; i < 16; i++) {
         W[i] = (chunk[i * 4] << 24) | (chunk[i * 4 + 1] << 16) | (chunk[i * 4 + 2] << 8) | chunk[i * 4 + 3];
     }
-    for (; i < 64; i++) {
+    for (i = 16; i < 64; i++) {  /* Fixed C89-style declaration */
         W[i] = sigma1(W[i - 2]) + W[i - 7] + sigma0(W[i - 15]) + W[i - 16];
     }
 
@@ -81,10 +81,12 @@ int main(int argc, char *argv[]) {
     fclose(file);
     
     /* Print final hash */
-    for (int i = 0; i < 8; i++) {
+    int i;
+    for (i = 0; i < 8; i++) {  /* Fixed C89-style declaration */
         printf("%08lx", H[i]);
     }
     printf("\n");
 
     return 0;
 }
+
